@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico: Ecossistema de Integração SUAP-AVA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            line-height: 1;
+            color: #FFA600;
+        }
+        .flow-box {
+            border-color: #003F5C;
+            background-color: #f0f5ff;
+        }
+        .step-circle {
+            background-color: #FFA600;
+            color: #003F5C;
+        }
+        #geminiResponse pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e9ecef;
+            font-family: monospace;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #003F5C;
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-[#003F5C] text-white p-8 text-center">
+        <h1 class="text-4xl font-bold mb-2">Ecossistema de Integração SUAP-AVA</h1>
+        <p class="text-xl max-w-3xl mx-auto">Uma arquitetura inteligente do IFRN para otimizar a gestão acadêmica e unificar a experiência de educação a distância.</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="problema" class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-3xl font-bold text-[#003F5C] mb-4 text-center">O Desafio: Sistemas Desconectados</h2>
+            <p class="text-center max-w-4xl mx-auto mb-6">A gestão de múltiplos Ambientes Virtuais de Aprendizagem (AVA) juntamente com um sistema acadêmico central (SUAP) gera redundância, inconsistência de dados e uma experiência fragmentada para alunos e professores. Era preciso construir uma ponte.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-red-100 text-red-800 p-4 rounded-lg">
+                    <div class="text-4xl font-bold">⚠️</div>
+                    <h3 class="text-xl font-semibold mt-2">Risco de Erros</h3>
+                    <p>Lançamentos manuais de notas e matrículas aumentam a chance de inconsistências críticas.</p>
+                </div>
+                <div class="bg-yellow-100 text-yellow-800 p-4 rounded-lg">
+                    <div class="text-4xl font-bold">🔄</div>
+                    <h3 class="text-xl font-semibold mt-2">Trabalho Duplicado</h3>
+                    <p>Professores e administradores gastam tempo valioso inserindo os mesmos dados em múltiplos sistemas.</p>
+                </div>
+                <div class="bg-blue-100 text-blue-800 p-4 rounded-lg">
+                    <div class="text-4xl font-bold">🧩</div>
+                    <h3 class="text-xl font-semibold mt-2">Experiência Fragmentada</h3>
+                    <p>Alunos e docentes navegam em plataformas isoladas, sem uma visão unificada de sua jornada acadêmica.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="solucao" class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-3xl font-bold text-[#003F5C] mb-6 text-center">A Solução: Uma Arquitetura de 3 Partes</h2>
+            <p class="text-center max-w-4xl mx-auto mb-8">Para resolver o desafio, foi criado um ecossistema que funciona como uma ponte inteligente, orquestrando o fluxo de informações entre o SUAP e os diversos AVAs (Moodle) de forma automatizada e segura.</p>
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                <div class="text-center p-4 border-2 rounded-lg flow-box w-full md:w-1/4">
+                    <h3 class="text-xl font-bold text-[#003F5C]">SUAP</h3>
+                    <p class="text-sm">Fonte da Verdade Acadêmica</p>
+                </div>
+                <div class="flow-arrow font-bold transform md:-rotate-0 rotate-90">↔️</div>
+                <div class="text-center p-4 border-2 rounded-lg flow-box w-full md:w-1/3 bg-[#ffedd5]">
+                    <h3 class="text-xl font-bold text-[#BC5090]">Painel AVA</h3>
+                    <p class="text-sm">O Cérebro: Orquestrador e Middleware</p>
+                </div>
+                <div class="flow-arrow font-bold transform md:-rotate-0 rotate-90">↔️</div>
+                 <div class="text-center p-4 border-2 rounded-lg flow-box w-full md:w-1/4">
+                    <h3 class="text-xl font-bold text-[#003F5C]">Moodle (AVAs)</h3>
+                    <p class="text-sm">Ambientes de Aprendizagem</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="componentes" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-bold text-[#7A5195] mb-3">1. SUAP</h3>
+                <p class="font-semibold mb-2">A Origem dos Dados</p>
+                <p>O Sistema Unificado de Administração Pública é o ponto de partida. Ele fornece os dados mestres de cursos, turmas (diários), usuários e matrículas, garantindo que a informação seja consistente desde da fonte.</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-bold text-[#BC5090] mb-3">2. Painel AVA</h3>
+                <p class="font-semibold mb-2">O Cérebro da Integração</p>
+                <p>Atuando como um orquestrador (middleware), ele recebe requisições do SUAP, decide para qual Moodle enviá-las e oferece uma interface unificada para que os usuários acessem todos os seus diários em um só lugar.</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                 <h3 class="text-2xl font-bold text-[#EF5675] mb-3">3. Plugin `local_suap`</h3>
+                <p class="font-semibold mb-2">O Executor no Moodle</p>
+                <p>Instalado em cada Moodle, este plugin é o "trabalhador" que executa as tarefas: cria cursos, matricula alunos, organiza grupos e coleta as notas para enviar de volta ao SUAP, respondendo ao Painel AVA.</p>
+            </div>
+        </section>
+        
+        <section id="fluxo" class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-3xl font-bold text-[#003F5C] mb-6 text-center">O Fluxo de Dados em Ação</h2>
+             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-semibold text-[#FF764A] mb-2 text-center">Fluxo 1: SUAP ➔ AVA</h3>
+                    <p class="text-center mb-4">Sincronização de Diários, Turmas e Usuários para criar os ambientes de aprendizagem.</p>
+                    <div class="chart-container">
+                        <canvas id="syncTasksChart"></canvas>
+                    </div>
+                     <p class="text-sm text-center mt-2">A maioria das tarefas críticas ocorre de forma síncrona (imediata), enquanto a organização de alunos em grupos é feita de forma assíncrona para otimizar a performance.</p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold text-[#FFA600] mb-2 text-center">Fluxo 2: AVA ➔ SUAP</h3>
+                    <p class="text-center mb-4">Exportação de Notas para automatizar o registro de avaliações no sistema acadêmico.</p>
+                    <div class="chart-container">
+                        <canvas id="gradesChart"></canvas>
+                    </div>
+                    <p class="text-sm text-center mt-2">O sistema busca por notas finais (`N1-N9`) e notas de avaliação final (`NAF`) no Moodle, enviando-as diretamente para o diário correspondente no SUAP.</p>
+                    <div id="gradeSummaryLoading" class="mt-4 flex justify-center hidden">
+                        <div class="spinner"></div>
+                    </div>
+                    <div id="gradeSummaryResponse" class="mt-4 p-4 bg-gray-50 border rounded-lg text-sm hidden"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="codigo-diario" class="bg-white rounded-lg shadow-md p-6 mb-8 text-center">
+            <h2 class="text-3xl font-bold text-[#003F5C] mb-4">O DNA Digital: Código do Diário</h2>
+            <p class="max-w-3xl mx-auto mb-6">Para garantir que cada turma seja única em todo o ecossistema, um código identificador é gerado pela concatenação de múltiplos dados. Essa é a chave que conecta o SUAP ao curso correto no Moodle.</p>
+            <div class="bg-gray-200 p-4 rounded-lg inline-block font-mono text-sm md:text-base break-all">
+                <span class="text-white bg-[#003F5C] p-1 rounded">20212</span>.<span class="text-white bg-[#374C80] p-1 rounded">1</span>.<span class="text-white bg-[#7A5195] p-1 rounded">011001</span>.<span class="text-white bg-[#BC5090] p-1 rounded">1P</span>.<span class="text-white bg-[#EF5675] p-1 rounded">FIC007</span>#<span class="text-white bg-[#FF764A] p-1 rounded">123456</span>
+            </div>
+             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6 text-left text-xs">
+                <p><strong class="text-[#003F5C]">20212:</strong> Ano/Período</p>
+                <p><strong class="text-[#374C80]">1:</strong> Período da Turma</p>
+                <p><strong class="text-[#7A5195]">011001:</strong> Cód. do Curso</p>
+                <p><strong class="text-[#BC5090]">1P:</strong> ID da Turma</p>
+                <p><strong class="text-[#EF5675]">FIC007:</strong> Cód. do Componente</p>
+                <p><strong class="text-[#FF764A]">#123456:</strong> ID do Diário SUAP</p>
+            </div>
+        </section>
+
+        <section id="implementacao" class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-3xl font-bold text-[#003F5C] mb-6 text-center">Guia Rápido de Implementação em 3 Passos</h2>
+            <div class="flex flex-col md:flex-row justify-around items-start">
+                <div class="flex-1 text-center p-4">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 step-circle">
+                        <span class="text-3xl font-bold">1</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-[#7A5195] mb-2">No Moodle</h3>
+                    <p>Instale o plugin `local_suap` e copie o token de autenticação gerado automaticamente nas configurações.</p>
+                </div>
+                <div class="w-full md:w-px bg-gray-300 h-px md:h-32 my-4 md:my-0"></div>
+                <div class="flex-1 text-center p-4">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 step-circle">
+                        <span class="text-3xl font-bold">2</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-[#BC5090] mb-2">No Painel AVA</h3>
+                    <p>Configure a chave de comunicação com o SUAP e cadastre cada Moodle usando a URL e o token do passo anterior.</p>
+                </div>
+                 <div class="w-full md:w-px bg-gray-300 h-px md:h-32 my-4 md:my-0"></div>
+                <div class="flex-1 text-center p-4">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 step-circle">
+                        <span class="text-3xl font-bold">3</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-[#EF5675] mb-2">No SUAP</h3>
+                    <p>Edite as configurações para apontar para a API do Painel AVA e informe o token de autenticação configurado no painel.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-[#003F5C] text-white text-center p-6">
+        <p class="font-bold">Um projeto de inovação do IFRN</p>
+        <p class="text-sm">Desenvolvido por: CTE, DEAD e Campus Natal-Zona Leste (ZL)</p>
+    </footer>
+
+    <script>
+        function wrapLabel(str, maxLen = 16) {
+            if (str.length <= maxLen) {
+                return str;
+            }
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).length > maxLen && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = currentLine ? currentLine + ' ' + word : word;
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+        
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const syncCtx = document.getElementById('syncTasksChart').getContext('2d');
+            new Chart(syncCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Síncronas', 'Assíncronas'],
+                    datasets: [{
+                        label: 'Nº de Tipos de Tarefa',
+                        data: [5, 1],
+                        backgroundColor: ['#7A5195', '#BC5090'],
+                        borderColor: ['#374C80', '#7A5195'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+
+            const gradesCtx = document.getElementById('gradesChart').getContext('2d');
+            new Chart(gradesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Notas de Etapa (N1-N9)', 'Nota de Avaliação Final (NAF)'],
+                    datasets: [{
+                        label: 'Tipos de Notas Exportadas',
+                        data: [9, 1],
+                        backgroundColor: ['#FF764A', '#FFA600'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: { callbacks: { title: tooltipTitleCallback } }
+                    }
+                }
+            });
+
+            const geminiSubmitBtn = document.getElementById('geminiSubmit');
+            const geminiPromptInput = document.getElementById('geminiPrompt');
+            const geminiResponseContainer = document.getElementById('geminiResponse');
+            const geminiLoading = document.getElementById('geminiLoading');           
+        });
+    </script>
+</body>
+</html>
+
