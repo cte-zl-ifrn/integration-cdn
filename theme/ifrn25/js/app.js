@@ -60,6 +60,11 @@ const app = Vue.createApp({
                 vlibras_active: true,
                 highlight_links: false,
                 stop_animations: false,
+                hidden_illustrative_image: false,
+                remove_justify_align: false,
+                high_line_height: false,
+                zoom_level: '100',
+                zoom_options: ['100', '120', '130', '150', '160'],
             },
             messages: [
                 // { id: 1, receiver: 'Ronaldo', sender: '', content: 'Conteúdo da mensagem 1', date: '2023-03-25 12:00', read: false, favorite: true, group: '', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8E7wlGmOb1_0GI4vqlvieVWlGdkMW5Mv0XQ&s' },
@@ -220,7 +225,20 @@ const app = Vue.createApp({
             if (document.body.classList.contains('stop_animations')) {
                 this.preferences.stop_animations = true;
             }
-            
+            if (document.body.classList.contains('hidden_illustrative_image')) {
+                this.preferences.hidden_illustrative_image = true;
+            }
+            if (document.body.classList.contains('remove_justify_align')) {
+                this.preferences.remove_justify_align = true;
+            }
+            if (document.body.classList.contains('high_line_height')) {
+                this.preferences.high_line_height = true;
+            }
+
+            const zoom = document.body.getAttribute('data-zoom');
+            if (zoom) {
+                this.preferences.zoom_level = zoom;
+            }   
         },
         async savePosition() {
             const pos = this.isBottom ? 'bottom' : 'top';
@@ -237,11 +255,12 @@ const app = Vue.createApp({
             }
         },
         getCsrfToken() {
-            // simples helper para pegar o cookie 'csrftoken'
-            return document.cookie.split(';')
+            const token = document.cookie
+                .split(';')
                 .map(c => c.trim())
-                .find(c => c.startsWith('csrftoken='))
-                .split('=')[1];
+                .find(c => c.startsWith('csrftoken='));
+
+            return token ? token.split('=')[1] : '';
         },
         initSplide() {
             if (this.splideInstance) {
@@ -675,18 +694,30 @@ const app = Vue.createApp({
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": this.getCsrfToken,
+                "X-CSRFToken": this.getCsrfToken(),
                 },
                 body: JSON.stringify({ value: value })
             })
             .then(res => res.json())
             .then(data => {
-                if (data.status === "ok") {
-                    document.body.classList.toggle(category, value);
-                } else {
+                if (data.status !== "ok") {
                     console.error(data.message);
+                    return;
                 }
+
+                if (category === "zoom_level") {
+                    document.body.setAttribute("data-zoom", value);
+                    return;
+                }
+
+                document.body.classList.toggle(category, value === true);
             });
+        },
+        cycleAccessibility() {
+            const currentIndex = this.preferences.zoom_options.indexOf(this.preferences.zoom_level);
+            const nextIndex = (currentIndex + 1) % this.preferences.zoom_options.length;
+            this.preferences.zoom_level = this.preferences.zoom_options[nextIndex];
+            this.togglePreference('zoom_level', 'selected', this.preferences.zoom_level);
         },
         goToCourse(item) {
             window.location.href = item.url;
@@ -695,15 +726,26 @@ const app = Vue.createApp({
           return item.url;
         },
         mostrarGauge(e) {
-            var anchor = (e.target.nodeName == 'A') ? e.target : e.target.parentElement;
-            console.log({"t":anchor});
-            // anchor.style.display = "none";
-            const img = document.createElement('img');
-            img.src = 'https://upload.wikimedia.org/wikipedia/commons/3/36/Lightness_rotate_36f-L_cw.gif';
-            img.className = 'floating-image';
-            img.width = 64;
-            anchor.appendChild(img);
-            setTimeout(() => {img.remove();}, 5000);
+            const overlay = document.createElement('div');
+            overlay.className = 'loading-overlay';
+
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+
+            const text = document.createElement('div');
+            text.className = 'loading-text';
+            text.textContent = 'Carregando, aguarde...';
+
+            // insere dentro do overlay
+            overlay.appendChild(spinner);
+            overlay.appendChild(text);
+
+            // adiciona overlay ao body
+            document.body.appendChild(overlay);
+
+            setTimeout(() => {
+                overlay.remove();
+            }, 3000);
         },
         showConfirmation(action, callback) {
             const modal = document.getElementById("popup-modal");
@@ -830,7 +872,7 @@ const app = Vue.createApp({
                         content: "<ul>" +
                                 "<li>Acesse nossa <b>Central de Ajuda</b> para tirar dúvidas das mais diversas.</li>" +
                                 "<li>Tenha seus direitos protegidos pela <b>Ouvidoria</b> do IFRN.</li>" +
-                                "<li>Use nossa lista de <b>contatos</b> caso necessite ligar ou telefonar para nós.</li>" +
+                                "<li>Use nossa lista de <b>contatos</b> caso precise entrar em contato por telefone.</li>" +
                                 "<li>Necessita de um atendimento para uma demanda? Use uma das nossas <b>Centrais de Atendimento</b> no SUAP.</li>" +
                                 "</ul>",
                         placement: "top-start",
@@ -887,14 +929,14 @@ const app = Vue.createApp({
                     steps.splice(1, 0, {
                         element: ".text-decoration-none",
                         title: "Sua sala de aula",
-                        content: "<p>Você pode acessar seuas salas clicando no <b>nome da sala ou no identificador</b> da sala.</p>" +
+                        content: "<p>Você pode acessar suas salas clicando no <b>nome da sala ou no identificador</b> da sala.</p>" +
                                 "<p>Aprenda nos próximos passos como usar os filtros para encontrar salas específicas, passadas, planejadas ou favoritas.</p>",
                         placement: "bottom-start",
                     });
                     steps.splice(2, 0, {
                         element: ".painel-card-details-info-unfavourite, .painel-card-details-info-favourite",
                         title: "Favorite uma sala",
-                        content: "<p>Você tem muitas salas? Favorite as que você vais estudar mais neste semestre, então acesse elas <b>filtrando pelas favoritas<b>.",
+                        content: "<p>Você tem muitas salas? Favorite as que você vai estudar mais neste semestre, então acesse elas <b>filtrando pelas favoritas<b>.",
                         placement: "bottom-end",
                     });
                 }

@@ -67,7 +67,6 @@
             }
 
             .sidebar-modal {
-                height: 100%;
                 overflow-x: hidden;
                 width: 0;
                 transition: width 0.2s ease-in;
@@ -372,15 +371,6 @@
                             &:hover {
                                 transform: translateY(-2px);
                                 box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                            }
-
-                            .floating-image {
-                                position: absolute;
-                                top: 50%;
-                                left: 50%;
-                                transform: translate(-50%, -50%);
-                                pointer-events: none; /* para não interferir com cliques */
-                                z-index: 9999;
                             }
 
                             .painel-card-header-icon {
