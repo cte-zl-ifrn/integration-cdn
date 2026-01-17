@@ -29,10 +29,10 @@ const app = Vue.createApp({
             modalTitle: '',
             activeTab: 0,
             tabs: [
-                { desktop: 'Meus Diários', mobile: 'Diários' }, 
-                { desktop: 'Salas de Coordenação', mobile: 'Coordenações' }, 
-                { desktop: 'Práticas', mobile: 'Práticas'}, 
-                { desktop: 'Reutilizar', mobile: 'Reutilizar'},
+                { desktop: 'Meus Diários', mobile: 'Diários' },
+                { desktop: 'Salas de Coordenação', mobile: 'Coordenações' },
+                { desktop: 'Práticas', mobile: 'Práticas' },
+                { desktop: 'Reutilizar', mobile: 'Reutilizar' },
             ],
             filters: {
                 situacao: 'inprogress',
@@ -130,31 +130,31 @@ const app = Vue.createApp({
     computed: {
         visibleTabs() {
             return this.tabs
-              .map((tab, index) => ({
-                ...tab, 
-                originalIndex: index
-              }))
-              .filter(tabItem => {
-                // Abas 0 (Meus Diários) e 1 (Salas de Coordenação) são sempre visíveis
-                if (tabItem.originalIndex === 0 || tabItem.originalIndex === 1) {
-                  return true;
-                }
-                // Aba 2 (Práticas) só é visível se praticas.length > 0
-                if (tabItem.originalIndex === 2 && this.praticas.length > 0) {
-                  return true;
-                }
-                // Aba 3 (Reutilizar) só é visível se reutilizaveis.length > 0
-                if (tabItem.originalIndex === 3 && this.reutilizaveis.length > 0) {
-                  return true;
-                }
+                .map((tab, index) => ({
+                    ...tab,
+                    originalIndex: index
+                }))
+                .filter(tabItem => {
+                    // Abas 0 (Meus Diários) e 1 (Salas de Coordenação) são sempre visíveis
+                    if (tabItem.originalIndex === 0 || tabItem.originalIndex === 1) {
+                        return true;
+                    }
+                    // Aba 2 (Práticas) só é visível se praticas.length > 0
+                    if (tabItem.originalIndex === 2 && this.praticas.length > 0) {
+                        return true;
+                    }
+                    // Aba 3 (Reutilizar) só é visível se reutilizaveis.length > 0
+                    if (tabItem.originalIndex === 3 && this.reutilizaveis.length > 0) {
+                        return true;
+                    }
 
-                return false;
-              });
+                    return false;
+                });
         },
 
         filteredMessages() {
             const searchQuery = this.messageSearchQuery.toLowerCase();
-            
+
             return this.messages.filter(msg => {
                 // Filtro por tipo de mensagem
                 let matchesType = false;
@@ -166,12 +166,12 @@ const app = Vue.createApp({
                     case 'private': matchesType = msg.group === ''; break;
                     default: matchesType = true;
                 }
-    
+
                 // Filtro por busca textual
-                const matchesSearch = !searchQuery || 
+                const matchesSearch = !searchQuery ||
                     (msg.sender && msg.sender.toLowerCase().includes(searchQuery)) ||
                     (msg.receiver && msg.receiver.toLowerCase().includes(searchQuery));
-    
+
                 return matchesType && matchesSearch;
             });
         },
@@ -190,12 +190,12 @@ const app = Vue.createApp({
                 if (value) {
                     const option = options.find(o => o.id === value);
                     if (option) {
-                    acc.push({
-                        type: key,
-                        label: option.label,
-                        value: value,
-                        icon: icon
-                    });
+                        acc.push({
+                            type: key,
+                            label: option.label,
+                            value: value,
+                            icon: icon
+                        });
                     }
                 }
                 return acc;
@@ -218,7 +218,7 @@ const app = Vue.createApp({
             }
             if (!document.body.classList.contains('vlibras_active')) {
                 this.preferences.vlibras_active = false;
-            }            
+            }
             if (document.body.classList.contains('highlight_links')) {
                 this.preferences.highlight_links = true;
             }
@@ -238,16 +238,16 @@ const app = Vue.createApp({
             const zoom = document.body.getAttribute('data-zoom');
             if (zoom) {
                 this.preferences.zoom_level = zoom;
-            }   
+            }
         },
         async savePosition() {
             const pos = this.isBottom ? 'bottom' : 'top';
             const app = document.getElementById('app');
             try {
                 await axios.post(
-                '/settings/menu-position/',
-                new URLSearchParams({ position: pos }),
-                { headers: { 'X-CSRFToken': this.getCsrfToken() } }
+                    '/settings/menu-position/',
+                    new URLSearchParams({ position: pos }),
+                    { headers: { 'X-CSRFToken': this.getCsrfToken() } }
                 );
                 app.classList.toggle('menu-bottom', this.isBottom);
             } catch (err) {
@@ -320,7 +320,7 @@ const app = Vue.createApp({
             return `${diffInMinutes} minutos atrás`;
         },
         selectMessageOption(value) {
-            this.selectedMessageOption = value;  
+            this.selectedMessageOption = value;
             if (this.splideInstance) {
                 this.splideInstance.refresh();
             }
@@ -337,7 +337,7 @@ const app = Vue.createApp({
                 this.modalOpen = false;
                 return;
             }
-            if(this.modalOpen && this.modalType !== type) {
+            if (this.modalOpen && this.modalType !== type) {
                 this.modalOpen = false;
                 setTimeout(() => {
                     this.modalType = type;
@@ -432,7 +432,7 @@ const app = Vue.createApp({
         },
         async filterCards() {
             // Modal fecha ao fazer busca no mobile
-            if(this.isMobile()) {
+            if (this.isMobile()) {
                 this.closeSidebarModal();
             }
             this.loading = true;
@@ -520,7 +520,7 @@ const app = Vue.createApp({
             // else {
             //     this.reutilizaveis = [];
             // }
-            
+
             // if (data.modulos && Array.isArray(data.modulos)) {
             //     this.modulos = data.modulos.map(modulo => ({
             //         id: modulo.id,
@@ -530,7 +530,7 @@ const app = Vue.createApp({
             // else {
             //     this.modulos = [];
             // }
-            
+
             if (data.periodos && Array.isArray(data.periodos)) {
                 this.periodos = data.periodos.slice(1).map(periodo => ({
                     id: periodo.id,
@@ -674,44 +674,44 @@ const app = Vue.createApp({
                 courseid: item.id,
                 favourite: new_status,
             });
-            
+
             fetch(`/api/v1/set_favourite/?${params.toString()}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                item.isfavourite = new_status === 1;
-            })
-            .catch(error => {
-                console.error('Erro ao atualizar favorito:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    item.isfavourite = new_status === 1;
+                })
+                .catch(error => {
+                    console.error('Erro ao atualizar favorito:', error);
+                });
         },
         togglePreference(category, key, value) {
             fetch(`/change_preference/${category}/${key}/`, {
                 method: "POST",
                 headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": this.getCsrfToken(),
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": this.getCsrfToken(),
                 },
                 body: JSON.stringify({ value: value })
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status !== "ok") {
-                    console.error(data.message);
-                    return;
-                }
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status !== "ok") {
+                        console.error(data.message);
+                        return;
+                    }
 
-                if (category === "zoom_level") {
-                    document.body.setAttribute("data-zoom", value);
-                    return;
-                }
+                    if (category === "zoom_level") {
+                        document.body.setAttribute("data-zoom", value);
+                        return;
+                    }
 
-                document.body.classList.toggle(category, value === true);
-            });
+                    document.body.classList.toggle(category, value === true);
+                });
         },
         cycleAccessibility() {
             const currentIndex = this.preferences.zoom_options.indexOf(this.preferences.zoom_level);
@@ -723,7 +723,7 @@ const app = Vue.createApp({
             window.location.href = item.url;
         },
         goToCourseUrl(item) {
-          return item.url;
+            return item.url;
         },
         mostrarGauge(e) {
             const overlay = document.createElement('div');
@@ -756,10 +756,10 @@ const app = Vue.createApp({
             const modalContent = modal.querySelector(".popup-modal-content");
 
             title.innerHTML = `Gostaria de <strong>${action}</strong> esse diário?`;
-            if(action == 'publicar') {
+            if (action == 'publicar') {
                 message.innerHTML = `Ao publicar este diário os alunos terão acesso ao conteúdo`;
             }
-            if(action == 'ocultar') {
+            if (action == 'ocultar') {
                 message.innerHTML = `Ao ocultar este diário os alunos <strong>não</strong> terão acesso ao conteúdo`;
             }
             modal.classList.remove("hidden");
@@ -870,11 +870,11 @@ const app = Vue.createApp({
                         element: "#btn-toggle-help",
                         title: "Ainda precisa de ajuda?",
                         content: "<ul>" +
-                                "<li>Acesse nossa <b>Central de Ajuda</b> para tirar dúvidas das mais diversas.</li>" +
-                                "<li>Tenha seus direitos protegidos pela <b>Ouvidoria</b> do IFRN.</li>" +
-                                "<li>Use nossa lista de <b>contatos</b> caso precise entrar em contato por telefone.</li>" +
-                                "<li>Necessita de um atendimento para uma demanda? Use uma das nossas <b>Centrais de Atendimento</b> no SUAP.</li>" +
-                                "</ul>",
+                            "<li>Acesse nossa <b>Central de Ajuda</b> para tirar dúvidas das mais diversas.</li>" +
+                            "<li>Tenha seus direitos protegidos pela <b>Ouvidoria</b> do IFRN.</li>" +
+                            "<li>Use nossa lista de <b>contatos</b> caso precise entrar em contato por telefone.</li>" +
+                            "<li>Necessita de um atendimento para uma demanda? Use uma das nossas <b>Centrais de Atendimento</b> no SUAP.</li>" +
+                            "</ul>",
                         placement: "top-start",
                         onPrevious: () => {
                             try {
@@ -921,7 +921,7 @@ const app = Vue.createApp({
                                 }
                             } catch (e) {
                                 console.error('Erro ao clicar no elemento:', e);
-                            }                            
+                            }
                         },
                     },
                 ];
@@ -930,7 +930,7 @@ const app = Vue.createApp({
                         element: ".text-decoration-none",
                         title: "Sua sala de aula",
                         content: "<p>Você pode acessar suas salas clicando no <b>nome da sala ou no identificador</b> da sala.</p>" +
-                                "<p>Aprenda nos próximos passos como usar os filtros para encontrar salas específicas, passadas, planejadas ou favoritas.</p>",
+                            "<p>Aprenda nos próximos passos como usar os filtros para encontrar salas específicas, passadas, planejadas ou favoritas.</p>",
                         placement: "bottom-start",
                     });
                     steps.splice(2, 0, {
